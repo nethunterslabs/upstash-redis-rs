@@ -1,6 +1,11 @@
 use crate::{cmd, Command, Result};
 
-cmd! {SPOP, Option<String>; key}
+cmd! {
+    /// Remove and return one or multiple random members from a set.
+    SPOP,
+    Option<String>;
+    key
+}
 
 impl SpopCommand {
     pub fn add_count(&mut self, count: usize) -> Result<&mut Self> {

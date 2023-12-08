@@ -1,7 +1,7 @@
 use reqwest::{header::InvalidHeaderValue, Error as ReqError};
-use url::ParseError;
 use serde_json::Error as SerdeError;
 use thiserror::Error;
+use url::ParseError;
 
 pub type Result<T> = std::result::Result<T, RedisError>;
 

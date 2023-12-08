@@ -1,3 +1,8 @@
 use crate::cmd;
 
-cmd! {GETDEL, Option<String>; key}
+cmd! {
+  /// Get a key after deleting it.
+  GETDEL,
+  Option<String>;
+  key
+}

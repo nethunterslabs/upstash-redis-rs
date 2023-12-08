@@ -1,3 +1,9 @@
 use crate::cmd;
 
-cmd! {HGET, Option<String>; key, field}
+cmd! {
+  /// Get the value of a hash field.
+  HGET,
+  Option<String>;
+  key,
+  field
+}

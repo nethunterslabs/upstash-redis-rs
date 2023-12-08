@@ -1,3 +1,8 @@
 use crate::cmd;
 
-cmd! {SMEMBERS, Vec<String>; key}
+cmd! {
+  /// Get all the members in a set.
+  SMEMBERS,
+  Vec<String>;
+  key
+}

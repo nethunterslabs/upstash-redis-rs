@@ -43,12 +43,19 @@ src/commands/hash
 ```
 
 `hdel.rs` may looks like this:
+
 ```rust
 use serde::Serialize;
 
 use crate::{cmd, Command, Result};
 
-cmd! {HDEL, usize; key, field}
+cmd! {
+    /// Removes the specified fields from the hash stored at key. Specified fields that do not exist within this hash are ignored. If key does not exist, it is treated as an empty hash and this command returns 0.
+    HDEL,
+    usize;
+    key,
+    field
+}
 
 impl HdelCommand {
     pub fn add_field<S: Serialize>(&mut self, field: S) -> Result<&mut Self> {
@@ -63,6 +70,7 @@ It will generate a struct named `HdelCommand`.
 `add_field` method add a option param `field`.
 
 `HDEL` in redis syntax description:
+
 ```
 HDEL key field [field ...]
 ```
@@ -76,12 +84,19 @@ implement [xdel](https://redis.io/commands/xdel/) as a example.
 3. define `xdel` command in `src/commands/streams/xdel.rs`.
 
 `xdel.rs`:
+
 ```rust
 use serde::Serialize;
 
 use crate::{cmd, Command, Result};
 
-cmd! {XDEL, usize; key, id}
+cmd! {
+    /// Removes the specified entries from a stream, and returns the number of entries deleted, that may be different from the number of IDs passed to the command in case certain IDs do not exist.
+    XDEL,
+    usize;
+    key,
+    id
+}
 
 impl XdelCommand {
     pub fn add_id<S: Serialize>(&mut self, id: S) -> Result<&mut Self> {

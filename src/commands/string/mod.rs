@@ -1,3 +1,10 @@
+pub mod append;
+pub mod decr;
+pub mod decrby;
 pub mod get;
 pub mod getdel;
+pub mod incr;
+pub mod incrby;
+pub mod incrbyfloat;
 pub mod set;
+pub mod strlen;

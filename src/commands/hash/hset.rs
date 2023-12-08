@@ -2,7 +2,14 @@ use serde::Serialize;
 
 use crate::{cmd, Command, Result};
 
-cmd! {HSET, usize; key, field, value}
+cmd! {
+    /// Set the string value of a hash field.
+    HSET,
+    usize;
+    key,
+    field,
+    value
+}
 
 impl HsetCommand {
     pub fn add_field_to_value<S1, S2>(&mut self, field: S1, value: S2) -> Result<&mut Self>

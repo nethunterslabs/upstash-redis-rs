@@ -9,46 +9,31 @@ use crate::model::ReResponse;
 
 use super::Result;
 
-mod string;
-mod bitmap;
-mod hash;
-mod list;
-mod set;
-mod sorted_set;
-mod geo;
-mod hyper_log_log;
-mod scripting;
-mod pub_sub;
-mod transactions;
-mod generic;
-mod connection;
-mod server;
-mod json;
-mod streams;
-
-pub use string::*;
-pub use bitmap::*;
-pub use hash::*;
-pub use list::*;
-pub use set::*;
-pub use sorted_set::*;
-pub use geo::*;
-pub use hyper_log_log::*;
-pub use scripting::*;
-pub use pub_sub::*;
-pub use transactions::*;
-pub use generic::*;
-pub use connection::*;
-pub use server::*;
-pub use json::*;
-pub use streams::*;
+pub mod bitmap;
+pub mod connection;
+pub mod generic;
+pub mod geo;
+pub mod hash;
+pub mod hyper_log_log;
+pub mod json;
+pub mod list;
+pub mod pub_sub;
+pub mod scripting;
+pub mod server;
+pub mod set;
+pub mod sorted_set;
+pub mod streams;
+pub mod string;
+pub mod transactions;
 
 #[async_trait]
 pub trait Command {
     type Output: DeserializeOwned;
 
     fn as_cmd(&self) -> &ReCmd;
+
     fn client(&self) -> &Client;
+
     fn url(&self) -> &Url;
 
     fn set_options<S: Serialize>(&mut self, opt: S) -> Result<&mut Self>;
@@ -66,12 +51,16 @@ pub trait Command {
             .json()
             .await?)
     }
+
+    fn json_to_output(&self, json: Value) -> Result<Self::Output> {
+        Ok(serde_json::from_value(json)?)
+    }
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone)]
 #[serde(transparent)]
 pub struct ReCmd {
-    elems: Vec<Value>,
+    pub(crate) elems: Vec<Value>,
 }
 
 impl ReCmd {
@@ -101,8 +90,9 @@ impl ReCmd {
 
 #[macro_export]
 macro_rules! cmd {
-    ($c:ident,$ty:ty;$($i:ident),*) => {
+    ($(#[$outer:meta])* $c:ident,$ty:ty;$($i:ident),*) => {
         paste::paste! {
+            $(#[$outer])*
             pub struct [<$c:camel Command>] {
                 pub(crate) client: reqwest::Client,
                 pub(crate) url: reqwest::Url,
@@ -131,6 +121,7 @@ macro_rules! cmd {
             }
 
             impl $crate::Redis {
+                $(#[$outer])*
                 pub fn [<$c:lower>]<$([<$i:upper>]),*>(&self, $($i: [<$i:upper>]),*) -> $crate::Result<[<$c:camel Command>]>
                 where
                     $(

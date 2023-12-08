@@ -3,13 +3,13 @@ use serde::Serialize;
 use crate::{cmd, Command, Result};
 
 cmd! {
-    /// Delete a key.
-    DEL,
+    /// Determine if a key exists.
+    EXISTS,
     usize;
     key
 }
 
-impl DelCommand {
+impl ExistsCommand {
     pub fn add_key<S: Serialize>(&mut self, key: S) -> Result<&mut Self> {
         self.set_options(key)
     }

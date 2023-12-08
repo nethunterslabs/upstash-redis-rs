@@ -1,3 +1,8 @@
 use crate::cmd;
 
-cmd! {GET, Option<String>; key}
+cmd! {
+  /// Get the value of a key.
+  GET,
+  Option<String>;
+  key
+}

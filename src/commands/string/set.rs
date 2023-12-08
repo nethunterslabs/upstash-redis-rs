@@ -4,7 +4,13 @@ use crate::cmd;
 
 use crate::{Command, Result};
 
-cmd! {SET, Option<String>; key, value}
+cmd! {
+    /// Set the string value of a key.
+    SET,
+    Option<String>;
+    key,
+    value
+}
 
 impl SetCommand {
     pub fn constraint(&mut self, cons: Constraint) -> Result<&mut Self> {
@@ -32,6 +38,7 @@ pub enum Constraint {
     XX,
 }
 
+#[allow(clippy::upper_case_acronyms)]
 #[derive(Serialize)]
 pub enum Expire {
     EX(usize),

@@ -1,3 +1,9 @@
 use crate::cmd;
 
-cmd! {SADD, usize; key, member}
+cmd! {
+  /// Add one or more members to a set.
+  SADD,
+  usize;
+  key,
+  member
+}
